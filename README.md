@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @Bdiaztorres
-- 👀 I’m interested in becoming a cloud architect in AWS and Azure.
+- 👀 I’m interested in becoming a Director of Information Technology, leading a team of cloud architects in AWS and Azure.
 - 🌱 I’m currently learning cloud automation
 - 📫 How to reach me:
   - https://www.linkedin.com/in/bryant-diaz-torres/
