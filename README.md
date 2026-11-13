@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @Bdiaztorres
-- 👀 Head of Infrastructure for Saince, Senior Manager, IT Ops for Deliver Health
+- 👀 Senior Director, IT Ops for Deliver Health
 - 🌱 I’m currently learning cloud automation
 - 📫 How to reach me:
   - https://www.linkedin.com/in/bryant-diaz-torres/
