@@ -59,7 +59,7 @@
 .ahi.is-done .ahi-strand{stroke-dashoffset:0}
 .ahi.is-done .ahi-gap,.ahi.is-done .ahi-over,.ahi.is-done .ahi-eyebrow,.ahi.is-done .ahi-meta,.ahi.is-done .ahi-scroll{opacity:1}
 .ahi.is-done .ahi-h .ch,.ahi.is-done .ahi-tag,.ahi.is-done .ahi-cta{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.ahi .ahi-strand{stroke-dashoffset:0!important;animation:none!important}.ahi .ahi-gap,.ahi .ahi-over,.ahi .ahi-eyebrow,.ahi .ahi-meta,.ahi .ahi-scroll,.ahi .ahi-tag,.ahi .ahi-cta{opacity:1!important;transform:none!important;animation:none!important}.ahi .ahi-h .ch{transform:none!important;animation:none!important}.ahi .ahi-ring,.ahi .ahi-scroll:after{display:none}}
+@media (prefers-reduced-motion:reduce){.ahi:not(.is-force) .ahi-strand{stroke-dashoffset:0!important;animation:none!important}.ahi:not(.is-force) .ahi-gap,.ahi:not(.is-force) .ahi-over,.ahi:not(.is-force) .ahi-eyebrow,.ahi:not(.is-force) .ahi-meta,.ahi:not(.is-force) .ahi-scroll,.ahi:not(.is-force) .ahi-tag,.ahi:not(.is-force) .ahi-cta{opacity:1!important;transform:none!important;animation:none!important}.ahi:not(.is-force) .ahi-h .ch{transform:none!important;animation:none!important}.ahi:not(.is-force) .ahi-ring,.ahi:not(.is-force) .ahi-scroll:after{display:none}}
 @media (max-width:600px){.ahi-meta{bottom:16px;font-size:10px}.ahi-meta span:first-child{display:none}.ahi-meta{justify-content:center}.ahi-scroll{display:none}}
 
 {% endstylesheet %}
@@ -73,17 +73,22 @@
     var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var seen=false;try{seen=once&&sessionStorage.getItem(key)==='1';}catch(e){}
     function done(){root.classList.remove('is-play');root.classList.add('is-done');}
-    function play(){
-      root.classList.remove('is-done','is-play');void root.offsetWidth;root.classList.add('is-play');
+    function play(force){
+      clearTimeout(root._t);
+      if(force)root.classList.add('is-force');
+      root.classList.remove('is-done','is-play');
+      try{(root.getAnimations?root.getAnimations({subtree:true}):[]).forEach(function(a){a.cancel();});}catch(e){}
+      void root.offsetWidth;
+      requestAnimationFrame(function(){requestAnimationFrame(function(){root.classList.add('is-play');});});
       try{if(once)sessionStorage.setItem(key,'1');}catch(e){}
-      clearTimeout(root._t);root._t=setTimeout(done,5200);
+      root._t=setTimeout(function(){done();root.classList.remove('is-force');},5400);
     }
     if(reduce||seen||root.closest('.shopify-section')&&window.Shopify&&Shopify.designMode&&root.dataset.editor==='still'){done();}
     else{
       if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){play();io.disconnect();}});},{threshold:.35});io.observe(root);}
       else play();
     }
-    var r=root.querySelector('.ahi-replay');if(r)r.addEventListener('click',function(){play();});
+    var r=root.querySelector('.ahi-replay');if(r)r.addEventListener('click',function(){play(true);});
   }
   function all(){document.querySelectorAll('.ahi').forEach(init);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',all);else all();
